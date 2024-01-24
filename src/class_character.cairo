@@ -2,7 +2,7 @@
 mod ClassCharacterV2 {
     use core::zeroable::Zeroable;
 
-     #[storage]
+    #[storage]
     struct Storage {
         owner: ContractAddress,
         students: LegacyMap::<ContractAddress, Student>
@@ -22,4 +22,34 @@ mod ClassCharacterV2 {
         self.owner.write(_init_owner);
     }
 
+    #[external(v0)]
+    fn add_student(
+        ref self: ContractState,
+        student_account: ContractAddress,
+        _name: felt252,
+        _age: u8,
+        _is_active: bool,
+        _has_reward: bool,
+        _xp_earnings: u256,
+    ) {
+        let owner = self.owner.read();
+        let caller = get_caller_address();
+        assert(owner == caller, 'caller not owner');
+        assert(!student_account.is_zero(), 'caller cannot be address zero');
+        assert(student_account != owner, 'student_account cannot be owner');
+        assert(_name != '', 'name cannot be empty');
+        assert(_age != 0, 'age cannot be zero');
+        let student_instance = Student {
+            name: _name,
+            age: _age,
+            is_active: _is_active,
+            has_reward: _has_reward,
+            xp_earnings: _xp_earnings
+        };
+        self.students.write(student_account, student_instance);
+        self.emit(StudentAdded { student: student_account });
+
+        assert(validate_age(_age), 'invalid age');
+        assert(validate_address(student_account), 'invalid student address');
+    }
 }
