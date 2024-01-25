@@ -68,6 +68,14 @@ mod ClassCharacterV2 {
         self.owner.read()
     }
 
-    
+     // This function cannot be access outside this contract (internal)
+    fn internal_get_owner(self: @ContractState) -> ContractAddress {
+        self.owner.read()
+    }
+
+    #[external(v0)]
+    fn get_student(self: @ContractState, student_account: ContractAddress) -> Student {
+        self.students.read(student_account)
+    }
 
 }
