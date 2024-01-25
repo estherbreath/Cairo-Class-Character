@@ -52,4 +52,22 @@ mod ClassCharacterV2 {
         assert(validate_age(_age), 'invalid age');
         assert(validate_address(student_account), 'invalid student address');
     }
+
+     #[external(v0)]
+    fn set_owner(ref self: ContractState, _new_owner: ContractAddress) -> bool {
+        let owner = self.owner.read();
+        let caller = get_caller_address();
+        assert(owner == caller, 'caller not owner');
+        self.owner.write(_new_owner);
+        self.emit(OwnerUpdated { init_owner: owner, new_owner: _new_owner });
+        true
+    }
+
+    #[external(v0)]
+    fn get_owner(self: @ContractState) -> ContractAddress {
+        self.owner.read()
+    }
+
+    
+
 }
