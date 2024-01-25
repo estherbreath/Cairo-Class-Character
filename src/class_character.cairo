@@ -1,6 +1,27 @@
 #[starknet::contract]
 mod ClassCharacterV2 {
     use core::zeroable::Zeroable;
+    use core::starknet::event::EventEmitter;
+    use starknet::{ContractAddress, get_caller_address};
+
+    // event 
+    #[event]
+    #[derive(Drop, starknet::Event)]
+    enum Event {
+        OwnerUpdated: OwnerUpdated,
+        StudentAdded: StudentAdded
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct OwnerUpdated {
+        init_owner: ContractAddress,
+        new_owner: ContractAddress
+    }
+
+    #[derive(Drop, starknet::Event)]
+    struct StudentAdded {
+        student: ContractAddress,
+    }
 
     #[storage]
     struct Storage {
