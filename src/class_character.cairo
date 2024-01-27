@@ -38,6 +38,26 @@ mod ClassCharacterV2 {
         xp_earnings: u256
     }
 
+      impl ContractState for Self {
+        fn set_owner(self:ContractAddress, new_owner: ContractAddress) -> bool {
+            let owner = self.owner.read();
+            let caller = get_caller_address();
+            assert(owner == caller, 'caller not owner');
+            self.owner.write(new_owner);
+            self.emit(OwnerUpdated { init_owner: owner, new_owner: new_owner });
+            true
+        }
+
+        fn get_owner(self:ContractAddress) -> ContractAddress {
+            self.owner.read()
+        }
+
+        fn internal_get_owner(self:ContractAddress) -> ContractAddress {
+            self.owner.read()
+        }
+      }
+    
+
     #[constructor]
     fn constructor(ref self: ContractState, _init_owner: ContractAddress) {
         self.owner.write(_init_owner);
