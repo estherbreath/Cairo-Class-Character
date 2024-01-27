@@ -56,6 +56,15 @@ mod ClassCharacterV2 {
             self.owner.read()
         }
       }
+
+       // validate age 
+    fn validate_age(age: u8) -> bool {
+        if age >= 18 && age <= 100 {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 
     #[constructor]
