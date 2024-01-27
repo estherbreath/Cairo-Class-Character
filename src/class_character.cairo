@@ -65,6 +65,15 @@ mod ClassCharacterV2 {
             return false;
         }
     }
+
+     // Add utility function for total_xp_earned
+    fn total_xp_earned(self: @ContractState) -> u256 {
+        let total: u256 = 0;
+        for student in self.students.values() {
+            total += student.xp_earnings;
+        }
+        return total;
+    }
     
 
     #[constructor]
