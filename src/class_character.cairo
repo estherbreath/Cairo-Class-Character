@@ -83,6 +83,15 @@ mod ClassCharacterV2 {
     self.emit(StudentUpdated { student: student_account });
 }
 
+fn delete_student(ref self: ContractState, student_account: ContractAddress) {
+    let owner = self.owner.read();
+    let caller = get_caller_address();
+    assert(owner == caller, 'caller not owner');
+    self.students.delete(student_account);
+    self.emit(StudentDeleted { student: student_account });
+}
+
+
     
 
     #[constructor]
