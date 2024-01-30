@@ -59,7 +59,7 @@ mod ClassCharacterV2 {
 
        // validate age 
     fn validate_age(age: u8) -> bool {
-        if age >= 18 && age <= 100 {
+        if age >= 18 && age <= 50 {
             return true;
         } else {
             return false;
@@ -90,6 +90,15 @@ fn delete_student(ref self: ContractState, student_account: ContractAddress) {
     self.students.delete(student_account);
     self.emit(StudentDeleted { student: student_account });
 }
+
+fn get_all_students(self: @ContractState) -> Vec<Student> {
+    let mut students: Vec<Student> = Vec::new();
+    for student in self.students.values() {
+        students.push(*student);
+    }
+    return students;
+}
+
 
 
     
