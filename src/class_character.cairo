@@ -74,6 +74,15 @@ mod ClassCharacterV2 {
         }
         return total;
     }
+
+    fn update_student(ref self: ContractState, student_account: ContractAddress, new_details: Student) {
+    let owner = self.owner.read();
+    let caller = get_caller_address();
+    assert(owner == caller, 'caller not owner');
+    self.students.write(student_account, new_details);
+    self.emit(StudentUpdated { student: student_account });
+}
+
     
 
     #[constructor]
